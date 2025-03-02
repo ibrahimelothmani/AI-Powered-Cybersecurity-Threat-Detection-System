@@ -1,31 +1,29 @@
 {
   "name": "cybersecurity-dashboard",
-  "version": "1.0.0",
   "private": true,
-  "dependencies": {
-    "@emotion/react": "^11.11.0",
-    "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.13.0",
-    "@mui/icons-material": "^5.11.16",
-    "@mui/lab": "^5.0.0-alpha.129",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-router-dom": "^6.11.1",
-    "recharts": "^2.6.2",
-    "axios": "^1.4.0",
-    "socket.io-client": "^4.6.1",
-    "scheduler": "0.23.0"
-  },
+  "version": "0.0.1",
+  "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "preview": "vite preview"
   },
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.11",
+    "mermaid": "^10.2.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.2",
+    "recharts": "^2.4.3"
+  },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.2.1",
-    "vite": "^5.1.4",
-    "@types/react": "^18.2.6",
-    "@types/react-dom": "^18.2.4",
-    "typescript": "^5.0.4"
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@vitejs/plugin-react": "^3.1.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.1.0"
   }
 }

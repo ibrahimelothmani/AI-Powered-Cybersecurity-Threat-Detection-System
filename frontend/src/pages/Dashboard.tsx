@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Grid, Paper, Typography, Box } from '@mui/material'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import ArchitectureDiagram from '../components/ArchitectureDiagram'
 
 interface ThreatData {
   timestamp: string
@@ -63,14 +64,15 @@ const Dashboard: React.FC = () => {
         </Paper>
       </Grid>
 
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12}>
         <Paper sx={{ p: 2 }}>
           <Typography variant="h6" gutterBottom>
-            System Status
+            System Architecture
           </Typography>
-          {/* TODO: Add system status component */}
+          <ArchitectureDiagram />
         </Paper>
       </Grid>
+      {/* TODO: Add system status component */}
     </Grid>
   )
 }
