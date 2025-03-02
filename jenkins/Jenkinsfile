@@ -1,0 +1,75 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_REGISTRY = 'ai-threat-detection'
+        KUBERNETES_NAMESPACE = 'default'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build Frontend') {
+            steps {
+                dir('frontend') {
+                    sh 'npm install'
+                    sh 'npm run build'
+                    sh "docker build -t ${DOCKER_REGISTRY}/frontend:${BUILD_NUMBER} ."
+                }
+            }
+        }
+
+        stage('Build AI Service') {
+            steps {
+                dir('ai-service') {
+                    sh "docker build -t ${DOCKER_REGISTRY}/ai-service:${BUILD_NUMBER} ."
+                }
+            }
+        }
+
+        stage('Build Data Ingestion') {
+            steps {
+                dir('data-ingestion') {
+                    sh "docker build -t ${DOCKER_REGISTRY}/data-ingestion:${BUILD_NUMBER} ."
+                }
+            }
+        }
+
+        stage('Push Images') {
+            steps {
+                sh "docker push ${DOCKER_REGISTRY}/frontend:${BUILD_NUMBER}"
+                sh "docker push ${DOCKER_REGISTRY}/ai-service:${BUILD_NUMBER}"
+                sh "docker push ${DOCKER_REGISTRY}/data-ingestion:${BUILD_NUMBER}"
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh "kubectl apply -f k8s/"
+                sh "kubectl set image deployment/frontend frontend=${DOCKER_REGISTRY}/frontend:${BUILD_NUMBER}"
+                sh "kubectl set image deployment/ai-service ai-service=${DOCKER_REGISTRY}/ai-service:${BUILD_NUMBER}"
+                sh "kubectl set image deployment/data-ingestion data-ingestion=${DOCKER_REGISTRY}/data-ingestion:${BUILD_NUMBER}"
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                sh 'kubectl get pods'
+                sh 'kubectl get services'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment successful!'
+        }
+        failure {
+            echo 'Deployment failed!'
+        }
+    }
+}

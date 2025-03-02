@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-ingestion
+  labels:
+    app: data-ingestion
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: data-ingestion
+  template:
+    metadata:
+      labels:
+        app: data-ingestion
+    spec:
+      containers:
+      - name: data-ingestion
+        image: ai-threat-detection/data-ingestion:latest
+        env:
+        - name: KAFKA_BOOTSTRAP_SERVERS
+          value: "kafka-service:9092"
+        - name: KAFKA_TOPIC
+          value: "network-traffic"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN", "NET_RAW"]
+        livenessProbe:
+          exec:
+            command:
+            - python
+            - -c
+            - "import socket; socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(('kafka-service', 9092))"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: data-ingestion
+spec:
+  selector:
+    app: data-ingestion
+  ports:
+  - port: 9000
+    targetPort: 9000
+  type: ClusterIP

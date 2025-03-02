@@ -1,0 +1,7 @@
+kafka-python==2.0.2
+scapy==2.5.0
+pyshark==0.6
+loguru==0.7.0
+python-dotenv==1.0.0
+fastapi==0.95.2
+uvicorn==0.22.0
