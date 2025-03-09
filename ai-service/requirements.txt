@@ -1,4 +1,4 @@
-etensorflow==2.12.0
+tensorflow==2.12.0
 kafka-python==2.0.2
 numpy==1.23.5
 pandas==2.0.1
