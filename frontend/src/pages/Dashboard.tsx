@@ -12,20 +12,27 @@ const Dashboard: React.FC = () => {
   const [threatData, setThreatData] = useState<ThreatData[]>([])
 
   useEffect(() => {
-    // TODO: Replace with actual WebSocket connection
-    const mockData = () => {
+    const ws = new WebSocket('ws://localhost:8765')
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data)
       const now = new Date()
+      const threatLevel = data.threat_prob ? data.threat_prob * 100 : 0
+
       setThreatData(prev => [
         ...prev,
         {
           timestamp: now.toLocaleTimeString(),
-          threatLevel: Math.random() * 100
+          threatLevel: threatLevel
         }
       ].slice(-20))
     }
 
-    const interval = setInterval(mockData, 2000)
-    return () => clearInterval(interval)
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error)
+    }
+
+    return () => ws.close()
   }, [])
 
   return (
