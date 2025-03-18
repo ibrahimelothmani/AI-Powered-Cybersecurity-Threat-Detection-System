@@ -1,11 +1,8 @@
 import React from 'react'
-import { Routes, Route } from 'react-router-dom'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import Box from '@mui/material/Box'
-import Dashboard from './pages/Dashboard'
-import Threats from './pages/Threats'
-import Layout from './components/Layout'
+import URLAnalyzer from './components/URLAnalyzer'
 
 const darkTheme = createTheme({
   palette: {
@@ -27,13 +24,8 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Box sx={{ display: 'flex' }}>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/threats" element={<Threats />} />
-          </Routes>
-        </Layout>
+      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+        <URLAnalyzer />
       </Box>
     </ThemeProvider>
   )
