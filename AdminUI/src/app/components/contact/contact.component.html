@@ -1,0 +1,47 @@
+<div class="contact-container">
+  <div class="header">
+    <h3>Contact Messages</h3>
+    <button class="refresh-btn" (click)="loadContacts()">
+      <i class="fas fa-sync-alt" [class.rotating]="loading"></i>
+      Refresh
+    </button>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+
+  <div class="contacts-list" *ngIf="!loading">
+    <div class="contact-card" *ngFor="let contact of contacts" [class.unread]="!contact.read">
+      <div class="contact-header">
+        <div class="user-info">
+          <span class="name">{{ contact.name }}</span>
+          <span class="email">{{ contact.email }}</span>
+        </div>
+        <div class="date">{{ contact.date | date:'medium' }}</div>
+      </div>
+      
+      <div class="message">
+        {{ contact.message }}
+      </div>
+
+      <div class="actions">
+        <button class="btn-action" (click)="markAsRead(contact.id)" *ngIf="!contact.read">
+          <i class="fas fa-check"></i>
+          Mark as Read
+        </button>
+        <button class="btn-action delete" (click)="deleteContact(contact.id)">
+          <i class="fas fa-trash"></i>
+          Delete
+        </button>
+      </div>
+    </div>
+
+    <div class="no-contacts" *ngIf="contacts.length === 0">
+      No contact messages found
+    </div>
+  </div>
+
+  <div class="loading-spinner" *ngIf="loading">
+    <div class="spinner"></div>
+    Loading contacts...
+  </div>
+</div>

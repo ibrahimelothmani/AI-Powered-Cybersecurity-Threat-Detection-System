@@ -1,0 +1,60 @@
+<div class="history-container">
+  <div class="filters">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search URLs..." (input)="filterHistory($event)">
+    </div>
+    <div class="filter-buttons">
+      <button [class.active]="!selectedUserId" (click)="loadAllHistory()">All History</button>
+      <button class="refresh" (click)="selectedUserId ? loadUserHistory(selectedUserId) : loadAllHistory()">
+        <i class="fas fa-sync-alt" [class.rotating]="loading"></i>
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+
+  <div class="table-responsive">
+    <table class="history-table">
+      <thead>
+        <tr>
+          <th>URL</th>
+          <th>User</th>
+          <th>Scan Date</th>
+          <th>Threat Level</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filteredHistory">
+          <td>
+            <a [href]="item.url" target="_blank" rel="noopener noreferrer">{{ item.url }}</a>
+          </td>
+          <td>{{ item.username }}</td>
+          <td>{{ item.scanDate | date:'medium' }}</td>
+          <td>
+            <span class="threat-badge" [class]="getThreatLevelClass(item.threatLevel)">
+              {{ item.threatLevel }}
+            </span>
+          </td>
+          <td>
+            <button class="btn-details" (click)="viewDetails(item)">
+              <i class="fas fa-info-circle"></i>
+              View Details
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="!filteredHistory.length && !loading">
+          <td colspan="5" class="no-data">No history found</td>
+        </tr>
+        <tr *ngIf="loading">
+          <td colspan="5" class="loading">
+            <div class="spinner"></div>
+            Loading history...
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

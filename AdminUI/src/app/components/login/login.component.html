@@ -1,0 +1,43 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Admin Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          formControlName="username"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': loginForm.get('username')?.errors && loginForm.get('username')?.touched }"
+        />
+        <div class="invalid-feedback" *ngIf="loginForm.get('username')?.errors?.['required'] && loginForm.get('username')?.touched">
+          Username is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': loginForm.get('password')?.errors && loginForm.get('password')?.touched }"
+        />
+        <div class="invalid-feedback" *ngIf="loginForm.get('password')?.errors?.['required'] && loginForm.get('password')?.touched">
+          Password is required
+        </div>
+      </div>
+
+      <div class="alert alert-danger" *ngIf="error">
+        {{error}}
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="loading || loginForm.invalid">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        Login
+      </button>
+    </form>
+  </div>
+</div>

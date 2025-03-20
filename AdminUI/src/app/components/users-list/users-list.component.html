@@ -1,0 +1,51 @@
+<div class="users-container">
+  <div class="table-header">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search users..." (input)="filterUsers($event)">
+    </div>
+    <div class="refresh-button" (click)="loadUsers()">
+      <i class="fas fa-sync-alt" [class.rotating]="loading"></i>
+      Refresh
+    </div>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+
+  <div class="table-responsive">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Last Active</th>
+          <th>Scans Count</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredUsers">
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.lastActive | date:'medium' }}</td>
+          <td>{{ user.scansCount }}</td>
+          <td>
+            <button class="btn-action" (click)="viewUserHistory(user.id)">
+              <i class="fas fa-history"></i>
+              View History
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="!filteredUsers.length && !loading">
+          <td colspan="5" class="no-data">No users found</td>
+        </tr>
+        <tr *ngIf="loading">
+          <td colspan="5" class="loading">
+            <div class="spinner"></div>
+            Loading users...
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
