@@ -6,78 +6,144 @@ A comprehensive cybersecurity solution that leverages artificial intelligence to
 
 ### Components
 
-1. **Data Ingestion Layer**
-   - Apache Kafka for real-time data streaming
-   - Log collectors and network traffic monitors
-
-2. **AI Processing Layer**
-   - TensorFlow-based threat detection models
-   - Real-time data processing and analysis
-
-3. **Frontend Dashboard**
-   - React-based user interface
+1. **Frontend (React + TypeScript)**
+   - Modern Material-UI dashboard
    - Real-time threat visualization
-   - Incident response management
+   - Responsive design for all devices
+   - JWT-based authentication
 
-4. **Monitoring & Observability**
-   - Prometheus for metrics collection
-   - Grafana for visualization and alerting
+2. **AI Service (Python + FastAPI)**
+   - TensorFlow-based threat detection
+   - Real-time URL and domain analysis
+   - SSL certificate validation
+   - Security headers inspection
 
-5. **DevOps Infrastructure**
-   - Docker containers
+3. **DevOps Infrastructure**
+   - Containerization with Docker
    - Kubernetes orchestration
-   - Jenkins CI/CD pipelines
+   - GitHub Actions CI/CD pipeline
+   - Infrastructure as Code with Terraform
+   - Configuration management with Ansible
+
+4. **Monitoring Stack**
+   - Prometheus metrics collection
+   - Grafana dashboards
+   - Kubernetes health monitoring
+   - Application performance metrics
 
 ## Project Structure
-
 ```
-├── frontend/           # React dashboard application
-├── ai-service/         # TensorFlow threat detection service
-├── data-ingestion/     # Kafka and data collection services
-├── monitoring/         # Prometheus and Grafana configurations
-├── k8s/                # Kubernetes manifests
-├── jenkins/            # Jenkins pipeline configurations
-└── docker/             # Dockerfile for each service
+.
+├── Frontend/                 # React frontend application
+│   ├── src/                 # Source code
+│   ├── Dockerfile          # Frontend container configuration
+│   └── package.json        # Dependencies and scripts
+├── ai-service/              # Python AI service
+│   ├── app.py             # FastAPI application
+│   ├── web_analyzer.py    # Threat detection logic
+│   ├── Dockerfile         # AI service container configuration
+│   └── requirements.txt   # Python dependencies
+├── k8s/                    # Kubernetes manifests
+│   ├── frontend-deployment.yaml
+│   └── ai-service-deployment.yaml
+├── terraform/              # Infrastructure as Code
+│   └── main.tf            # Terraform configuration
+├── monitoring/             # Monitoring configuration
+│   └── prometheus/        # Prometheus setup
+├── ansible/               # Configuration management
+│   └── site.yml          # Ansible playbook
+└── .github/
+    └── workflows/         # GitHub Actions CI/CD
 ```
 
 ## Prerequisites
 
-- Docker and Docker Compose
-- Kubernetes cluster (local or cloud)
-- Jenkins server
-- Node.js >= 14.x
-- Python >= 3.8
+- Docker Desktop with Kubernetes enabled
+- Terraform >= 1.0.0
+- Ansible >= 2.9
+- Node.js >= 18.x
+- Python >= 3.9
+- AWS CLI configured (for cloud deployment)
 
-## Setup Instructions
+## Quick Start
 
-1. Clone the repository
-2. Install dependencies for each service
-3. Set up Docker containers
-4. Deploy to Kubernetes
-5. Configure Jenkins pipelines
+1. **Local Development**
+   ```bash
+   # Frontend
+   cd Frontend
+   npm install
+   npm run dev
 
-Detailed setup instructions for each component will be provided in their respective directories.
+   # AI Service
+   cd ai-service
+   python -m venv venv
+   source venv/bin/activate  # or .\venv\Scripts\activate on Windows
+   pip install -r requirements.txt
+   uvicorn app:app --reload
+   ```
 
-## Features
+2. **Docker Deployment**
+   ```bash
+   # Build images
+   docker build -t cybersecurity-frontend Frontend/
+   docker build -t cybersecurity-ai ai-service/
 
-- Real-time network traffic analysis
-- System log monitoring and analysis
-- AI-powered threat detection
-- Real-time alerts and notifications
-- Interactive dashboard for threat visualization
-- Automated incident response workflows
-- Scalable microservices architecture
-- Comprehensive monitoring and metrics
+   # Run containers
+   docker-compose up -d
+   ```
 
-## Technologies
+3. **Kubernetes Deployment**
+   ```bash
+   # Apply Kubernetes manifests
+   kubectl apply -f k8s/
 
-- **Frontend**: React, Material-UI
-- **Backend**: Python, TensorFlow
-- **Data Streaming**: Apache Kafka
-- **Containerization**: Docker, Kubernetes
-- **CI/CD**: Jenkins
-- **Monitoring**: Prometheus, Grafana
+   # Check deployment status
+   kubectl get pods -n cybersecurity
+   ```
+
+4. **Infrastructure Deployment**
+   ```bash
+   # Initialize and apply Terraform
+   cd terraform
+   terraform init
+   terraform apply
+
+   # Run Ansible playbook
+   cd ../ansible
+   ansible-playbook site.yml
+   ```
+
+## Monitoring
+
+- Prometheus: Access metrics at `http://localhost:9090`
+- Grafana: Access dashboards at `http://localhost:3000`
+  - Default credentials: admin/admin
+  - Pre-configured dashboards for system and application metrics
+
+## CI/CD Pipeline
+
+The GitHub Actions pipeline automatically:
+1. Runs tests for both frontend and AI service
+2. Builds and pushes Docker images
+3. Deploys to Kubernetes cluster
+4. Updates infrastructure using Terraform
+
+## Security Notes
+
+- All sensitive data should be stored in Kubernetes secrets
+- Update the `.env` files with proper credentials
+- Configure proper CORS settings in production
+- Enable network policies in Kubernetes
+- Regular security audits recommended
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
 
-MIT
+MIT License - See LICENSE file for details
