@@ -7,6 +7,11 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ContactMapper {
+    @Mapping(source = "adminUser.id", target = "adminUserId")
     ContactDTO toDTO(Contact contact);
+
+    @Mapping(target = "adminUser", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     Contact toEntity(ContactDTO contactDTO);
 }

@@ -2,7 +2,7 @@ package com.ibrahim.Cybersecurity.controller;
 
 import com.ibrahim.Cybersecurity.dto.ContactDTO;
 import com.ibrahim.Cybersecurity.service.ContactService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/contact")
+@RequestMapping("/api/contacts")
+@RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4201")
 public class ContactController {
 
-    private ContactService contactService;
+    private final ContactService contactService;
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -29,7 +31,7 @@ public class ContactController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ContactDTO> getContactById(@PathVariable String id) {
+    public ResponseEntity<ContactDTO> getContactById(@PathVariable Long id) {
         return contactService.getContactById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -42,7 +44,7 @@ public class ContactController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ContactDTO> updateContact(@PathVariable String id, @RequestBody ContactDTO contactDTO) {
+    public ResponseEntity<ContactDTO> updateContact(@PathVariable Long id, @RequestBody ContactDTO contactDTO) {
         return contactService.updateContact(id, contactDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -51,7 +53,7 @@ public class ContactController {
     @PostMapping("/{id}/respond")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ContactDTO> respondToContact(
-            @PathVariable String id,
+            @PathVariable Long id,
             @RequestParam String response,
             @RequestParam String respondedBy) {
         return contactService.respondToContact(id, response, respondedBy)
@@ -61,8 +63,14 @@ public class ContactController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> deleteContact(@PathVariable String id) {
+    public ResponseEntity<Void> deleteContact(@PathVariable Long id) {
         contactService.deleteContact(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/admin/{adminId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<ContactDTO>> getContactsByAdminUser(@PathVariable Long adminId) {
+        return ResponseEntity.ok(contactService.getContactsByAdminUser(adminId));
     }
 }
