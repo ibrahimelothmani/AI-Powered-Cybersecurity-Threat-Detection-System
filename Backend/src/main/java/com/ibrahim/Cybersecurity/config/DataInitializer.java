@@ -2,15 +2,17 @@ package com.ibrahim.Cybersecurity.config;
 
 import com.ibrahim.Cybersecurity.model.AdminUser;
 import com.ibrahim.Cybersecurity.repository.AdminUserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
 
-    private AdminUserRepository adminUserRepository;
-    private PasswordEncoder passwordEncoder;
+    private final AdminUserRepository adminUserRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) {

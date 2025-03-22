@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin-users")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4201")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AdminUserController {
 
     private final AdminUserService adminUserService;
